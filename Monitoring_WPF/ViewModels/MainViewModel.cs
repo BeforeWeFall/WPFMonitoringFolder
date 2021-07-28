@@ -92,15 +92,20 @@ namespace Monitoring_WPF
         }
         private void OnRenamed(object sender, FileSystemEventArgs e)
         {
-            var renamedEvent = e as RenamedEventArgs;
-            var fileInfo = new FileInfo(e.FullPath);
-            if (CheckFile(e.Name))
+            try
             {
-                PersonInfo person = Collection.Where(x => x.Path.Equals(renamedEvent.OldFullPath)).Select(q => q).First();
-                person.NameAndDate = GetName(fileInfo.Name, fileInfo.LastWriteTime);
-                person.Temp = GetTemp(e.Name);
-                person.Path = fileInfo.FullName;
-
+                var renamedEvent = e as RenamedEventArgs;
+                var fileInfo = new FileInfo(e.FullPath);
+                if (CheckFile(e.Name))
+                {
+                    PersonInfo person = Collection.Where(x => x.Path.Equals(renamedEvent.OldFullPath)).Select(q => q).First();
+                    person.NameAndDate = GetName(fileInfo.Name, fileInfo.LastWriteTime);
+                    person.Temp = GetTemp(e.Name);
+                    person.Path = fileInfo.FullName;
+                }
+            }
+            catch
+            {
             }
 
         }
